@@ -1,0 +1,30 @@
+.modal__content_type_confirmation {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 132px 60px 132px;
+    font-family: "Cabinet Grotesk", Arial, sans-serif;
+    max-width: 670px;
+}
+
+.modal__confirm-button {
+    margin: 0 20px 24px 20px;
+    background: none;
+    border: none;
+    color: #FF5D00;
+    font-weight: 700;
+    font-size: 20px;
+    padding: 0;
+    cursor: pointer;
+}
+
+.modal__cancel-button {
+    margin: 0 20px 0 20px;
+    font-weight: 700;
+    font-size: 20px;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}

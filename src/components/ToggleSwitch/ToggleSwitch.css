@@ -1,0 +1,75 @@
+.toggle-switch {
+  width: 56px;
+  height: 28px;
+  border: 2px solid #000;
+  border-radius: 20px;
+  cursor: pointer;
+  position: relative;
+}
+
+.toggle-switch__checkbox {
+  opacity: 0;
+  display: none;
+}
+
+.toggle-switch__circle {
+  background-color: #000;
+  width: 28px;
+  height: 28px;
+  position: absolute;
+  border-radius: 50%;
+}
+
+.toggle-switch__text {
+  font-family: "Cabinet Grotesk", Arial, sans-serif;
+  position: absolute;
+  color: #808080;
+  top: 5px;
+  left: 0;
+}
+
+.toggle-switch__text_F {
+  left: 9px;
+  text-align: center;
+}
+
+.toggle-switch__text_C {
+  right: -28px;
+  text-align: center;
+}
+
+.toggle-switch__checkbox:checked ~ .toggle-switch__circle {
+  left: 28px;
+  transition: left 0.3s ease-in-out;
+}
+
+.toggle-switch__text_color_white {
+  color: #fff;
+}
+
+.toggle-switch__checkbox:checked
+  ~ .toggle-switch__circle
+  + .toggle-switch__text_F {
+  color: #808080; /* Fahrenheit inside the circle turns white when checked */
+}
+
+.toggle-switch__checkbox:checked
+  ~ .toggle-switch__circle
+  ~ .toggle-switch__text_C {
+  color: #fff; /* Celsius outside the circle stays default color when checked */
+}
+
+.toggle-switch__checkbox:not(:checked)
+  ~ .toggle-switch__circle
+  + .toggle-switch__text_F {
+  color: #fff; /* Fahrenheit outside the circle stays default color when unchecked */
+}
+
+.toggle-switch__checkbox:not(:checked)
+  ~ .toggle-switch__circle
+  + .toggle-switch__text_C {
+  color: #fff; /* Celsius inside the circle turns white when unchecked */
+}
+
+/* transform: translateX(...)
+    mix-blend-mode: ... */

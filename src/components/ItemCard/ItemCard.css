@@ -1,0 +1,80 @@
+.card {
+  height: 325px;
+  width: 323px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.card__header {
+  position: absolute;
+  top: 15px;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 15px;
+  z-index: 1;
+}
+
+.card__name {
+  margin: 0;
+  font-family: "Cabinet Grotesk", Arial, sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  opacity: 60%;
+  background-color: white;
+  padding: 5px;
+  border: 2px solid white;
+  border-radius: 4px;
+}
+
+.card__image {
+  width: 100%;
+  border-radius: 19px;
+}
+
+.card__delete-button {
+  background: none;
+  border: none;
+  color: #ff4d00;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  font-family: "Cabinet Grotesk", Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 20px;
+  margin-top: 0;
+}
+
+.item-card__like-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.item-card__like-btn:hover {
+  transform: scale(1.1);
+}
+
+.item-card__like-icon {
+  width: 18px;
+  height: 15px;
+  opacity: 0.6;
+  filter: brightness(0) saturate(100%);
+  transition: all 0.2s ease;
+}
+
+.item-card__like-btn_active .item-card__like-icon {
+  opacity: 1;
+  filter: brightness(0) saturate(100%);
+}
