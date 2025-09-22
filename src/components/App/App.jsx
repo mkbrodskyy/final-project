@@ -1,314 +1,350 @@
-import { Routes, Route } from "react-router-dom";
-import "./App.css";
 import Header from "../Header/Header";
+import "./App.css";
+import "../Page/Page.css";
+import "../NewsResults/NewsResults.css";
 import Main from "../Main/Main";
+import SavedNews from "../SavedNews/SavedNews";
+import { Routes, Route, useLocation } from "react-router-dom";
+import SearchForm from "../SearchForm/SearchForm";
 import Footer from "../Footer/Footer";
-import ItemModal from "../ItemModal/ItemModal";
-import Profile from "../Profile/Profile";
-import { getWeather, filterWeatherData } from "../../utils/weatherApi";
-import { coordinates, APIkey } from "../../utils/constants";
-import { useEffect, useState } from "react";
-import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnit";
-import AddItemModal from "../AddItemModal/AddItemModal";
-import { getItems, addItem, removeItem, updateUser } from "../../utils/api";
-import DeleteConfirmationModal from "../DeleteConfirmationModal/DeleteConfirmationModal";
-import RegisterModal from "../RegisterModal/RegisterModal";
 import LoginModal from "../LoginModal/LoginModal";
-import { register, authorize, checkToken } from "../../utils/auth";
-import CurrentUserContext from "../../contexts/CurrentUserContext";
-import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
-import EditProfileModal from "../EditProfileModal/EditProfileModal";
-import { addCardLike, removeCardLike } from "../../utils/api";
+import SignUpModal from "../SignUpModal/SignUpModal";
+import SuccessModal from "../SuccessModal/SuccessModal";
+import { useState, useEffect } from "react";
+import { fetchNews } from "../../utils/newsApi";
+import NewsCard from "../NewsCard/NewsCard";
+import notFoundImg from "../../assets/not-found.png";
+import NewsLoading from "../NewsLoading/NewsLoading";
+
+// Show 3 cards at a time with Show more button
+function NewsResults({ articles, isLoggedIn, savedArticles, onSaveToggle }) {
+  const [visibleCount, setVisibleCount] = useState(3);
+  const handleShowMore = () => setVisibleCount((c) => c + 3);
+  const visibleArticles = articles.slice(0, visibleCount);
+  const showMoreNeeded = visibleCount < articles.length;
+  return (
+    <>
+      <ul className="news-results-list">
+        {visibleArticles.map((article, i) => (
+          <li key={article.url || i} className="news-results-list__item">
+            <NewsCard
+              article={article}
+              isLoggedIn={isLoggedIn}
+              isSaved={!!savedArticles.find((a) => a.url === article.url)}
+              onSaveToggle={() => onSaveToggle(article)}
+            />
+          </li>
+        ))}
+      </ul>
+      {showMoreNeeded && (
+        <div style={{ textAlign: "center", marginTop: 24 }}>
+          <button className="news-results__show-more" onClick={handleShowMore}>
+            <span className="news-results__show-more-text">Show more</span>
+          </button>
+        </div>
+      )}
+    </>
+  );
+}
 
 function App() {
-  const [weatherData, setWeatherData] = useState({
-    type: "",
-    temp: { F: 999, C: 999 },
-    condition: "",
-    city: "",
-    isDay: false,
-  });
-  const [itemToDelete, setItemToDelete] = useState(null);
-  const [clothingItems, setClothingItems] = useState([]);
-  const [activeModal, setActiveModal] = useState("");
-  const [selectedCard, setSelectedCard] = useState({});
-  const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
+  // News search state
+  const [articles, setArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
+  const [searchError, setSearchError] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  // Simulated saved articles state, persisted in localStorage
+  const [savedArticles, setSavedArticles] = useState(() => {
+    try {
+      const stored = localStorage.getItem("savedArticles");
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  });
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
-
-  const handleToggleSwitchChange = () => {
-    setCurrentTemperatureUnit(currentTemperatureUnit === "F" ? "C" : "F");
+  // Save/unsave handler
+  const handleToggleSaveArticle = (article) => {
+    setSavedArticles((prev) => {
+      const alreadySaved = prev.find((a) => a.url === article.url);
+      let updated;
+      if (alreadySaved) {
+        updated = prev.filter((a) => a.url !== article.url);
+      } else {
+        // Attach the current searchQuery as the keyword
+        const articleWithKeyword = { ...article, keyword: searchQuery };
+        updated = [...prev, articleWithKeyword];
+      }
+      localStorage.setItem("savedArticles", JSON.stringify(updated));
+      return updated;
+    });
   };
-  const handleCardClick = (card) => {
-    setActiveModal("preview");
-    setSelectedCard(card);
-  };
-  const handleAddClick = () => {
-    setActiveModal("add-garment");
-  };
-  const closeActiveModal = () => {
-    setActiveModal(""); // any modal
-    setIsLoginModalOpen(false); // login modal
-    setIsRegisterModalOpen(false); // register modal
-    setIsEditProfileModalOpen(false); // edit profile modal
-  };
-
-  // Universal submit handler for loading states and modal closing
-  const handleSubmit = (request) => {
+  // News search handler
+  const handleSearch = (query) => {
+    if (!query.trim()) {
+      setSearchError("Please enter a keyword");
+      setArticles([]);
+      return;
+    }
+    setSearchError("");
     setIsLoading(true);
-    request()
-      .then(closeActiveModal)
-      .catch(console.error)
+    setArticles([]);
+    setSearchQuery(query);
+
+    // Calculate date range (last 7 days)
+    const to = new Date();
+    const from = new Date();
+    from.setDate(to.getDate() - 7);
+    const toStr = to.toISOString().split("T")[0];
+    const fromStr = from.toISOString().split("T")[0];
+
+    fetchNews({ query, from: fromStr, to: toStr })
+      .then((data) => {
+        if (data.articles && data.articles.length > 0) {
+          setArticles(data.articles);
+        } else {
+          setArticles([]);
+          setSearchError("Nothing Found");
+        }
+      })
+      .catch(() =>
+        setSearchError(
+          "Sorry, something went wrong during the request. Please try again later."
+        )
+      )
       .finally(() => setIsLoading(false));
   };
-  const handleDeleteClick = (id) => {
-    setItemToDelete(id);
-    setActiveModal("confirm-delete");
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    return localStorage.getItem("isLoggedIn") === "true";
+  });
+  const [username, setUsername] = useState(() => {
+    return localStorage.getItem("username") || "";
+  });
+
+  useEffect(() => {
+    localStorage.setItem("isLoggedIn", isLoggedIn);
+    localStorage.setItem("username", username);
+  }, [isLoggedIn, username]);
+
+  const handleOpenLoginModal = () => {
+    setIsLoginModalOpen(true);
+    setIsSignUpModalOpen(false);
   };
-
-  const handleAddItemModalSubmit = (
-    { name, imageUrl, weatherType },
-    resetForm
-  ) => {
-    const makeRequest = () => {
-      const token = localStorage.getItem("jwt");
-      return addItem({ name, imageUrl, weatherType }, token).then((newItem) => {
-        setClothingItems([newItem, ...clothingItems]);
-        resetForm();
-      });
-    };
-
-    handleSubmit(makeRequest);
-  };
-
-  const handleConfirmDelete = () => {
-    if (itemToDelete) {
-      const makeRequest = () => {
-        const token = localStorage.getItem("jwt");
-        return removeItem(itemToDelete, token).then(() => {
-          setClothingItems((prevItems) =>
-            prevItems.filter((item) => item._id !== itemToDelete)
-          );
-          setItemToDelete(null);
-        });
-      };
-
-      handleSubmit(makeRequest);
-    }
-  };
-
-  const handleOpenRegisterModal = () => setIsRegisterModalOpen(true);
-  const handleCloseRegisterModal = () => setIsRegisterModalOpen(false);
-  const handleRegister = (formData) => {
-    const makeRequest = () => {
-      return register(formData)
-        .then(() => {
-          return authorize({
-            email: formData.email,
-            password: formData.password,
-          });
-        })
-        .then((res) => {
-          localStorage.setItem("jwt", res.token);
-          return checkToken(res.token);
-        })
-        .then((userData) => {
-          setCurrentUser(userData);
-          setIsLoggedIn(true);
-        });
-    };
-    handleSubmit(makeRequest);
-  };
-
-  const handleOpenLoginModal = () => setIsLoginModalOpen(true);
   const handleCloseLoginModal = () => setIsLoginModalOpen(false);
+  const handleOpenSignUpModal = () => {
+    setIsSignUpModalOpen(true);
+    setIsLoginModalOpen(false);
+  };
+  const handleCloseSignUpModal = () => setIsSignUpModalOpen(false);
+
   const handleLogin = (formData) => {
-    const makeRequest = () => {
-      return authorize(formData)
-        .then((res) => {
-          localStorage.setItem("jwt", res.token);
-          return checkToken(res.token);
-        })
-        .then((userData) => {
-          setCurrentUser(userData);
-          setIsLoggedIn(true);
-        });
-    };
-    handleSubmit(makeRequest);
+    setIsLoggedIn(true);
+    setIsLoginModalOpen(false);
+    if (formData.username) {
+      setUsername(formData.username);
+    } else if (formData.email) {
+      // Try to get the username from localStorage mapping
+      const userMap = JSON.parse(
+        localStorage.getItem("userEmailToName") || "{}"
+      );
+      if (userMap[formData.email]) {
+        setUsername(userMap[formData.email]);
+      } else {
+        // Fallback: use the part before @ as a display name
+        setUsername(formData.email.split("@")[0]);
+      }
+    }
+    // localStorage update handled by useEffect
   };
-
-  const handleSignOut = () => {
-    localStorage.removeItem("jwt");
-    setIsLoggedIn(false);
-    setCurrentUser(null);
-  };
-
-  const handleOpenEditProfileModal = () => setIsEditProfileModalOpen(true);
-  const handleCloseEditProfileModal = () => setIsEditProfileModalOpen(false);
-
-  const handleUpdateUser = ({ name, avatar }) => {
-    const makeRequest = () => {
-      const token = localStorage.getItem("jwt");
-      return updateUser({ name, avatar }, token).then((updatedUser) => {
-        setCurrentUser(updatedUser);
-      });
-    };
-    handleSubmit(makeRequest);
-  };
-
-  // Handle like/unlike functionality for clothing items
-  const handleCardLike = ({ _id, isLiked }) => {
-    const token = localStorage.getItem("jwt");
-    if (!isLiked) {
-      addCardLike(_id, token)
-        .then((updatedCard) => {
-          setClothingItems((cards) =>
-            cards.map((item) => (item._id === _id ? updatedCard : item))
-          );
-        })
-        .catch(console.error);
-    } else {
-      removeCardLike(_id, token)
-        .then((updatedCard) => {
-          setClothingItems((cards) =>
-            cards.map((item) => (item._id === _id ? updatedCard : item))
-          );
-        })
-        .catch(console.error);
+  const handleSignUp = (formData) => {
+    setIsSignUpModalOpen(false);
+    setIsSuccessModalOpen(true);
+    if (formData && formData.username && formData.email) {
+      setUsername(formData.username);
+      // Save mapping of email to username in localStorage
+      const userMap = JSON.parse(
+        localStorage.getItem("userEmailToName") || "{}"
+      );
+      userMap[formData.email] = formData.username;
+      localStorage.setItem("userEmailToName", JSON.stringify(userMap));
+    } else if (formData && formData.username) {
+      setUsername(formData.username);
     }
   };
-
-  // Check authentication token on app load
-  useEffect(() => {
-    const token = localStorage.getItem("jwt");
-    if (token) {
-      checkToken(token)
-        .then((userData) => {
-          setCurrentUser(userData);
-          setIsLoggedIn(true);
-        })
-        .catch(() => {
-          setIsLoggedIn(false);
-          setCurrentUser(null);
-          localStorage.removeItem("jwt");
-        });
-    }
-  }, []);
-
-  useEffect(() => {
-    getWeather(coordinates, APIkey)
-      .then((data) => {
-        const filteredData = filterWeatherData(data);
-        setWeatherData(filteredData);
-      })
-      .catch(console.error);
-  }, []);
-
-  useEffect(() => {
-    getItems()
-      .then((data) => {
-        setClothingItems(data.reverse());
-      })
-      .catch(console.error);
-  }, []);
-
+  const handleSignInFromSuccess = () => {
+    setIsSuccessModalOpen(false);
+    setIsLoggedIn(true);
+  };
+  const handleSignInFromSignUp = () => {
+    setIsSignUpModalOpen(false);
+    setIsLoginModalOpen(true);
+  };
+  const location = useLocation();
+  // Compute Saved articles header info
+  const savedCount = savedArticles ? savedArticles.length : 0;
+  const savedKeywordArr =
+    savedArticles && savedArticles.length > 0
+      ? Array.from(new Set(savedArticles.map((a) => a.keyword).filter(Boolean)))
+      : [];
+  let savedKeywordsDisplay = "";
+  if (savedKeywordArr.length === 1) {
+    savedKeywordsDisplay = savedKeywordArr[0];
+  } else if (savedKeywordArr.length === 2) {
+    savedKeywordsDisplay = savedKeywordArr[0] + ", " + savedKeywordArr[1];
+  } else if (savedKeywordArr.length > 2) {
+    savedKeywordsDisplay = `${savedKeywordArr[0]}, ${savedKeywordArr[1]}, and ${
+      savedKeywordArr.length - 2
+    } other`;
+  }
   return (
-    <CurrentUserContext.Provider value={currentUser}>
-      <CurrentTemperatureUnitContext.Provider
-        value={{ currentTemperatureUnit, handleToggleSwitchChange }}
-      >
-        <div className="page">
-          <div className="page__content">
+    <div className="page">
+      {location.pathname === "/" ? (
+        <div className="header-bg-wrapper">
+          <div className="header-bg-image"></div>
+          <div className="header-wrapper">
             <Header
-              handleAddClick={handleAddClick}
-              weatherData={weatherData}
               isLoggedIn={isLoggedIn}
-              onSignUp={handleOpenRegisterModal}
+              username={username}
               onSignIn={handleOpenLoginModal}
-              onSignOut={handleSignOut}
+              onSignOut={() => {
+                setIsLoggedIn(false);
+                setUsername("");
+                // localStorage update handled by useEffect
+              }}
             />
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <Main
-                    weatherData={weatherData}
-                    handleCardClick={handleCardClick}
-                    clothingItems={clothingItems}
-                    onCardLike={handleCardLike}
-                  />
-                }
-              />
-              <Route
-                path="/profile"
-                element={
-                  <ProtectedRoute isLoggedIn={isLoggedIn}>
-                    <Profile
-                      onCardClick={handleCardClick}
-                      handleAddClick={handleAddClick}
-                      clothingItems={clothingItems}
-                      onEditProfile={handleOpenEditProfileModal}
-                      onSignOut={handleSignOut}
-                      onCardLike={handleCardLike}
-                    />
-                  </ProtectedRoute>
-                }
-              />
-            </Routes>
-            <Footer />
           </div>
-          <AddItemModal
-            onClose={closeActiveModal}
-            isOpen={activeModal === "add-garment"}
-            onAddItemModalSubmit={handleAddItemModalSubmit}
-            isLoading={isLoading}
-          />
-          <ItemModal
-            isOpen={activeModal === "preview"}
-            card={selectedCard}
-            onClose={closeActiveModal}
-            onDeleteClick={handleDeleteClick}
-          />
-          <DeleteConfirmationModal
-            isOpen={activeModal === "confirm-delete"}
-            onClose={closeActiveModal}
-            onConfirm={handleConfirmDelete}
-            isLoading={isLoading}
-          />
-          {isRegisterModalOpen && (
-            <RegisterModal
-              isOpen={isRegisterModalOpen}
-              onClose={handleCloseRegisterModal}
-              onRegister={handleRegister}
-              onSignIn={handleOpenLoginModal}
-              isLoading={isLoading}
-            />
-          )}
-          {isLoginModalOpen && (
-            <LoginModal
-              isOpen={isLoginModalOpen}
-              onClose={handleCloseLoginModal}
-              onLogin={handleLogin}
-              onSignUp={handleOpenRegisterModal}
-              isLoading={isLoading}
-            />
-          )}
-          {isEditProfileModalOpen && (
-            <EditProfileModal
-              isOpen={isEditProfileModalOpen}
-              onClose={handleCloseEditProfileModal}
-              onUpdateUser={handleUpdateUser}
-              isLoading={isLoading}
-            />
-          )}
+          <h1 className="main-title">What's going on in the world?</h1>
+          <p className="main-subtext">
+            Find the latest news on any topic and save them in your personal
+            account.
+          </p>
+          <SearchForm onSearch={handleSearch} error={searchError} />
         </div>
-      </CurrentTemperatureUnitContext.Provider>
-    </CurrentUserContext.Provider>
+      ) : (
+        <div className="header-wrapper">
+          <Header
+            isLoggedIn={isLoggedIn}
+            username={username}
+            onSignIn={handleOpenLoginModal}
+            onSignOut={() => {
+              setIsLoggedIn(false);
+              setUsername("");
+              // localStorage update handled by useEffect
+            }}
+            savedArticlesHeader={
+              location.pathname === "/saved-news"
+                ? {
+                    username,
+                    count: savedCount,
+                    keywordsDisplay: savedKeywordsDisplay,
+                  }
+                : null
+            }
+          />
+        </div>
+      )}
+
+      {/* News results block - only on home page, and only after a search */}
+      {location.pathname === "/" &&
+        (isLoading ||
+          articles.length > 0 ||
+          (searchError && searchError !== "Please enter a keyword")) && (
+          <div className="news-results-block">
+            {/* Show heading only when there are articles and not loading or error */}
+            {!isLoading && !searchError && articles.length > 0 && (
+              <h2 className="news-results-heading">Search results</h2>
+            )}
+            {isLoading && <NewsLoading />}
+            {!isLoading && !searchError && articles.length > 0 && (
+              <NewsResults
+                articles={articles}
+                isLoggedIn={isLoggedIn}
+                savedArticles={savedArticles}
+                onSaveToggle={handleToggleSaveArticle}
+              />
+            )}
+            {!isLoading &&
+              searchError &&
+              searchError !== "Please enter a keyword" &&
+              (searchError === "Nothing Found" ? (
+                <div className="news-results-error-wrapper">
+                  <img
+                    src={notFoundImg}
+                    alt="Not found"
+                    className="news-results-error__img"
+                  />
+                  <div className="news-results-error">
+                    <div>Nothing found</div>
+                    <div className="news-results-error__subtext">
+                      Sorry, but nothing matched <br />
+                      your search terms.
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="news-results-error">{searchError}</div>
+              ))}
+          </div>
+        )}
+      {/* Only show main-body-visuals on the home page */}
+      {location.pathname === "/" && (
+        <div className="main-body-visuals-wrapper">
+          <div className="main-body-visuals">
+            <div className="main-solid-circle"></div>
+            <div className="main-about-text">
+              <h2 className="main-about-title">About the author</h2>
+              <p className="main-about-desc">
+                This block describes the project author. Here you should
+                indicate your name, what you do, and which development
+                technologies you know.
+              </p>
+              <p className="main-about-desc">
+                You can also talk about your experience with TripleTen, what you
+                learned there, and how you can help potential customers.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route
+          path="/saved-news"
+          element={
+            <SavedNews
+              savedArticles={savedArticles}
+              isLoggedIn={isLoggedIn}
+              onSaveToggle={handleToggleSaveArticle}
+            />
+          }
+        />
+      </Routes>
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onClose={handleCloseLoginModal}
+        onLogin={handleLogin}
+        onSignUp={handleOpenSignUpModal}
+      />
+      <SignUpModal
+        isOpen={isSignUpModalOpen}
+        onClose={handleCloseSignUpModal}
+        onSignIn={handleSignInFromSignUp}
+        onSignUpSuccess={(formData) => handleSignUp(formData)}
+      />
+      <SuccessModal
+        isOpen={isSuccessModalOpen}
+        onClose={() => setIsSuccessModalOpen(false)}
+        onSignIn={handleSignInFromSuccess}
+      />
+      {/* this is the modal overlay, which should be rendered UNDER the modal content and visually be like a 50% transparent background under the modal */}
+      {/* <Overlay /> */}
+      <div className="footer-wrapper">
+        <Footer />
+      </div>
+    </div>
   );
 }
 

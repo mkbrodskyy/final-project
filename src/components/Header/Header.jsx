@@ -1,76 +1,104 @@
+// Accept savedArticles prop for /saved-news
 import "./Header.css";
-import logo from "../../assets/logo.svg";
-import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
-import CurrentUserContext from "../../contexts/CurrentUserContext";
+import SavedArticlesHeader from "../SavedArticlesHeader/SavedArticlesHeader";
+import exitIcon from "../../assets/exit.png";
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+import MobileMenu from "../MobileMenu/MobileMenu";
 
 function Header({
-  handleAddClick,
-  weatherData,
   isLoggedIn,
-  onSignUp,
+  username,
+  onSignOut,
   onSignIn,
+  savedArticlesHeader,
 }) {
-  const currentUser = useContext(CurrentUserContext);
-  const currentDate = new Date().toLocaleString("default", {
-    month: "long",
-    day: "numeric",
-  });
-
+  // Use dark header style on /saved-news
+  const isDark = window.location.pathname === "/saved-news";
   return (
-    <header className="header">
-      <div className="header__container">
-        <Link to="/">
-          <img className="header__logo" src={logo} alt="App logo" />
-        </Link>
-        <p className="header__date">
-          {currentDate}, {weatherData.city}
-        </p>
-      </div>
-      <div className="header__navigation">
-        <ToggleSwitch />
-
-        {isLoggedIn ? (
-          <>
-            <button
-              onClick={handleAddClick}
-              type="button"
-              className="header__add-clothes-btn"
-            >
-              + Add clothes
-            </button>
-            <Link to="/profile" className="header__link">
-              <div className="header__user-container">
-                <p className="header__username">{currentUser?.name}</p>
-                <img
-                  className="header__avatar"
-                  src={
-                    currentUser?.avatar || require("../../assets/avatar.png")
-                  }
-                  alt="User avatar"
-                />
-              </div>
-            </Link>
-          </>
-        ) : (
-          <div className="header__user-container">
-            <button
-              onClick={onSignUp}
-              type="button"
-              className="header__add-clothes-btn"
-            >
-              Sign Up
-            </button>
-            <button
-              onClick={onSignIn}
-              type="button"
-              className="header__add-clothes-btn"
-            >
-              Log In
-            </button>
+    <header className={`header${isDark ? " header--dark" : ""}`}>
+      <div className="header-main-wrapper">
+        <div className="header__row">
+          <span className="header__brand">NewsExplorer</span>
+          <div className="header__actions">
+            {/* Desktop buttons */}
+            <div className="header__actions-desktop">
+              <Link
+                to="/"
+                className="header__btn header__btn-home header__btn--active"
+                style={{ position: "relative", textDecoration: "none" }}
+              >
+                Home
+                {window.location.pathname === "/" && (
+                  <div
+                    className="header__btn-indicator"
+                    style={{ width: 68 }}
+                  ></div>
+                )}
+              </Link>
+              {isLoggedIn && (
+                <div className="header__btn-wrapper">
+                  <Link
+                    to="/saved-news"
+                    className="header__btn header__btn-saved"
+                    style={{ textDecoration: "none" }}
+                  >
+                    Saved articles
+                  </Link>
+                  {window.location.pathname === "/saved-news" && (
+                    <div className="header__btn-indicator header__btn-indicator--saved"></div>
+                  )}
+                </div>
+              )}
+              {isLoggedIn ? (
+                <div className="header__btn-username">
+                  <span className="header__username-text">{username}</span>
+                  <button
+                    className="header__signout-wrapper"
+                    type="button"
+                    aria-label="Sign out"
+                    onClick={onSignOut}
+                  >
+                    <svg
+                      className="header__signout-icon"
+                      width="28"
+                      height="28"
+                      viewBox="0 0 28 28"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M8 6h8M8 6v16M8 22h8M16 14h8M24 14l-3-3M24 14l-3 3"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              ) : (
+                <button
+                  className="header__btn header__btn-signin"
+                  onClick={onSignIn}
+                >
+                  Sign in
+                </button>
+              )}
+            </div>
+            {/* Hamburger menu for mobile */}
+            {/* this is the content we need to render on the top - so user will see the modal content */}
+            <div className="header__actions-mobile">
+              <MobileMenu
+                isLoggedIn={isLoggedIn}
+                username={username}
+                onSignIn={onSignIn}
+                onSignOut={onSignOut}
+              />
+            </div>
           </div>
-        )}
+        </div>
+        {/* ...existing code... */}
       </div>
     </header>
   );

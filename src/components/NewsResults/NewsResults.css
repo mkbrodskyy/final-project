@@ -1,0 +1,208 @@
+.news-results-heading {
+  font-family: "Roboto Slab", serif;
+  font-weight: 400;
+  font-size: 40px;
+  line-height: 46px;
+  letter-spacing: 0px;
+  color: #1a1b22;
+  margin-top: 80px;
+  margin-bottom: 64px;
+  margin-left: 104px;
+  text-align: left;
+}
+
+.news-results__show-more {
+  margin: 0 auto;
+}
+.news-results__show-more {
+  width: 288px;
+  height: 64px;
+  border-radius: 80px;
+  background: #ffffff;
+  opacity: 1;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+  box-shadow: 0 2px 8px rgba(26, 27, 34, 0.04);
+  padding: 0;
+}
+
+.news-results__show-more:hover {
+  background: #e8e8e8;
+}
+
+.news-results__show-more-text {
+  width: 91px;
+  height: 24px;
+  display: inline-block;
+  font-family: var(--font-main);
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: 0px;
+  color: var(--color-text);
+  text-align: center;
+  vertical-align: middle;
+  opacity: 1;
+  margin: 0;
+  padding: 0;
+}
+.news-results-error-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 31.5px;
+  margin-top: 86px;
+  margin-bottom: 80px;
+}
+
+.news-results-error__img {
+  width: 82.5px;
+  height: 82.5px;
+  object-fit: contain;
+  display: block;
+  opacity: 1;
+  color: #6c707a;
+  box-sizing: border-box;
+}
+
+.news-results-error {
+  width: 356px;
+  min-height: 30px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+  font-family: var(--font-title);
+  font-weight: 400;
+  font-size: 26px;
+  line-height: 30px;
+  letter-spacing: 0px;
+  color: var(--color-text);
+  text-align: center;
+  opacity: 1;
+  background: none;
+  border: none;
+}
+
+.news-results-error__subtext {
+  width: 356px;
+  min-height: 48px;
+  font-family: var(--font-main);
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: 0px;
+  color: #6c707a;
+  text-align: center;
+  opacity: 1;
+  margin: 0;
+  background: none;
+  border: none;
+}
+.news-results-list .news-results-list__item {
+  display: block;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  overflow: hidden;
+}
+
+.news-results-list__item {
+  list-style: none;
+}
+
+.news-results-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 400px);
+  gap: 21px;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.news-results-block {
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto 40px auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+@media (min-width: 1280px) and (max-width: 1439px) {
+  .news-results-block .news-results-list {
+    grid-template-columns: repeat(3, 400px);
+    gap: 16px 16px;
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+@media (min-width: 1440px) {
+  .news-results-block {
+    width: 1440px;
+    max-width: none;
+    padding: 0;
+  }
+  .news-results-block .news-results-list {
+    grid-template-columns: repeat(3, 400px);
+    gap: 16px 16px;
+    justify-content: start;
+    padding-left: 102px;
+    padding-right: 106px;
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 768px) {
+  .news-results-list .news-results-list__item {
+    width: 224px;
+    height: 420px;
+    opacity: 1;
+  }
+
+  .news-results-list {
+    grid-template-columns: repeat(auto-fit, 224px);
+    gap: 8px;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    opacity: 1;
+    max-width: 100vw;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .news-results-list .news-results-list__item {
+    height: 420px;
+    opacity: 1;
+    margin: 0;
+    padding: 0;
+    display: block;
+  }
+  .news-results-heading {
+    font-size: 30px;
+    line-height: 40px;
+    margin-top: 40px;
+    margin-bottom: 32px;
+    margin-left: 20px;
+  }
+}
+
+@media (max-width: 767px) {
+  .news-results-heading {
+    margin-left: 0;
+    font-size: 30px;
+    margin-top: 32px;
+    margin-bottom: 58px;
+  }
+  .news-results-list {
+    grid-template-columns: 1fr;
+  }
+}

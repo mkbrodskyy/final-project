@@ -11,7 +11,7 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "npm run build && scp -r dist/* mkbrodskyy@frontend.twilightparadox.com:/home/mkbrodskyy/frontend"
+    "deploy-disabled": "npm run build && scp -r dist/* mkbrodskyy@frontend.twilightparadox.com:/home/mkbrodskyy/frontend"
   },
   "dependencies": {
     "react": "^18.3.1",
