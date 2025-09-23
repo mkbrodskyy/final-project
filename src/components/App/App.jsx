@@ -125,6 +125,18 @@ function App() {
   });
 
   useEffect(() => {
+    const body = document.body;
+    if (isLoginModalOpen || isSignUpModalOpen || isSuccessModalOpen) {
+      body.style.overflow = "hidden";
+    } else {
+      body.style.overflow = "visible";
+    }
+    return () => {
+      body.style.overflow = "visible";
+    };
+  }, [isLoginModalOpen, isSignUpModalOpen, isSuccessModalOpen]);
+
+  useEffect(() => {
     localStorage.setItem("isLoggedIn", isLoggedIn);
     localStorage.setItem("username", username);
   }, [isLoggedIn, username]);
@@ -214,6 +226,8 @@ function App() {
                 setUsername("");
                 // localStorage update handled by useEffect
               }}
+              isLoginModalOpen={isLoginModalOpen}
+              onCloseLoginModal={handleCloseLoginModal}
             />
           </div>
           <h1 className="main-title">What's going on in the world?</h1>
@@ -234,6 +248,8 @@ function App() {
               setUsername("");
               // localStorage update handled by useEffect
             }}
+            isLoginModalOpen={isLoginModalOpen}
+            onCloseLoginModal={handleCloseLoginModal}
             savedArticlesHeader={
               location.pathname === "/saved-news"
                 ? {

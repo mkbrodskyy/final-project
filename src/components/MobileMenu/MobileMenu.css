@@ -1,4 +1,3 @@
-/* Make mobile menu icon white on home page */
 .header:not(.header--dark) .mobile-menu__bar {
   background: #fff;
 }
@@ -88,6 +87,14 @@
   transform: translateY(5px);
   color: #fff;
 }
+.mobile-menu__close-icon-img {
+  width: 28px;
+  height: 28px;
+}
+
+.header:not(.header--dark) .mobile-menu__close-icon-img {
+  filter: brightness(0) invert(1);
+}
 
 @media (max-width: 767px) {
   .mobile-menu__overlay {
@@ -137,7 +144,7 @@
     border: none;
     width: 40px;
     height: 40px;
-    margin-right: 24px;
+    margin-right: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -178,7 +185,7 @@
     left: 0;
     width: 288px;
     height: 56px;
-    margin-bottom: 22px; /* Space between "Home" and "Sign in" */
+    margin-bottom: 22px;
     color: #fff;
     font-family: "Roboto", var(--font-main);
     font-weight: 500;
@@ -189,12 +196,6 @@
     padding: 0;
     /* Make the pseudo-element non-clickable */
     pointer-events: none;
-  }
-
-  .modal {
-    background: none !important; /* Removes the dark overlay */
-    align-items: flex-start !important; /* Overrides vertical centering */
-    justify-content: flex-start !important; /* Overrides horizontal centering */
   }
 
   .modal__content {

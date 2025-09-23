@@ -11,6 +11,8 @@ function Header({
   onSignOut,
   onSignIn,
   savedArticlesHeader,
+  isLoginModalOpen,
+  onCloseLoginModal,
 }) {
   // Use dark header style on /saved-news
   const isDark = window.location.pathname === "/saved-news";
@@ -94,6 +96,8 @@ function Header({
                 username={username}
                 onSignIn={onSignIn}
                 onSignOut={onSignOut}
+                isLoginModalOpen={isLoginModalOpen}
+                onCloseLoginModal={onCloseLoginModal}
               />
             </div>
           </div>

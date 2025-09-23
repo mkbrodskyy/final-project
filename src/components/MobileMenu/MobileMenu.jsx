@@ -1,14 +1,52 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./MobileMenu.css";
 import closeIcon from "../../assets/close.png";
 import { NavLink } from "react-router-dom";
 
-function MobileMenu({ isLoggedIn, username, onSignIn, onSignOut }) {
+function MobileMenu({
+  isLoggedIn,
+  username,
+  onSignIn,
+  onSignOut,
+  isLoginModalOpen,
+  onCloseLoginModal,
+}) {
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (isLoginModalOpen) {
+      setOpen(false);
+    }
+  }, [isLoginModalOpen]);
+
+  useEffect(() => {
+    // When the mobile menu is open, we want to prevent the body from scrolling
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      // When it's closed, we allow scrolling again
+      document.body.style.overflow = "visible";
+    }
+
+    // Cleanup function to ensure scrolling is re-enabled when the component unmounts
+    return () => (document.body.style.overflow = "visible");
+  }, [open]);
 
   return (
     <div className="mobile-menu">
-      {!open ? (
+      {isLoginModalOpen ? (
+        <button
+          className="mobile-menu__icon"
+          aria-label="Close modal"
+          onClick={onCloseLoginModal}
+        >
+          <img
+            src={closeIcon}
+            alt="Close"
+            className="mobile-menu__close-icon-img"
+          />
+        </button>
+      ) : !open ? (
         <button
           className="mobile-menu__icon"
           aria-label="Open menu"
