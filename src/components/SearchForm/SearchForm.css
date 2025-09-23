@@ -1,0 +1,108 @@
+/* Input styles for 'Enter topic' */
+.search-form__input {
+  flex: 1;
+  /* height: 100%; removed to allow media query to control height */
+  border: none;
+  outline: none;
+  font-family: var(--font-main);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+  letter-spacing: 0px;
+  background: transparent;
+  color: #222;
+  box-sizing: border-box;
+}
+
+.search-form__input::placeholder {
+  color: var(--color-muted);
+  font-family: var(--font-main);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+  letter-spacing: 0px;
+}
+.search-form {
+  top: 432px;
+  left: 416px;
+  width: 608px;
+  height: 64px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  border: 1px solid #d1d2d6;
+  border-radius: 100px;
+  background: #fff;
+  box-sizing: border-box;
+  padding-left: 16px;
+  margin-top: 88px;
+  z-index: 1;
+}
+
+.search-form__button {
+  width: 168px;
+  height: 64px;
+  border: none;
+  border-radius: 100px;
+  background: var(--color-accent);
+  color: #fff;
+  font-family: var(--font-main);
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: 0px;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  box-sizing: border-box;
+  box-shadow: 0px 5px 15px 0px #0e1a3933;
+  opacity: 1;
+  transition: background 0.2s;
+}
+
+.search-form__button:hover {
+  background: #347eff;
+}
+
+.search-form__button:active {
+  background: #2a65cc;
+}
+
+@media (max-width: 1024px) and (min-width: 768px) {
+  .search-form {
+    max-width: 452px;
+    margin-top: 48px;
+    max-height: 456px;
+  }
+}
+
+@media (max-width: 767px) {
+  .search-form {
+    flex-direction: column;
+    background: none;
+    border: none;
+    align-items: center;
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    padding: 0;
+    margin-top: 122px;
+  }
+  .search-form__input {
+    border-radius: 100px;
+    background: #fff;
+    width: 288px !important;
+    margin-bottom: 12px;
+    box-sizing: border-box;
+    display: block;
+    min-height: 56px;
+    padding-left: 16px;
+  }
+  .search-form__button {
+    width: 288px !important;
+    height: 56px !important;
+    box-sizing: border-box;
+    display: block;
+  }
+}

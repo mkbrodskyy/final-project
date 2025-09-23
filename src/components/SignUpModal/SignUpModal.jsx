@@ -2,22 +2,34 @@ import { useState } from "react";
 import "../Modal/Modal.css";
 import closeIcon from "../../assets/close.png";
 
-const LoginModal = ({ isOpen, onClose, onLogin, onSignUp }) => {
+import { useEffect } from "react";
+
+const SignUpModal = ({ isOpen, onClose, onSignIn, onSignUpSuccess }) => {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailTouched, setEmailTouched] = useState(false);
 
-  // Simple email validation regex
+  useEffect(() => {
+    if (isOpen) {
+      setUsername("");
+      setEmail("");
+      setPassword("");
+      setEmailTouched(false);
+    }
+  }, [isOpen]);
+
   const isValidEmail = (email) => /^\S+@\S+\.\S+$/.test(email);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onLogin({ email, password });
+    // Simulate sign up logic here
+    onSignUpSuccess({ username, email });
   };
 
   const handleSecondButtonClick = () => {
     onClose();
-    onSignUp();
+    onSignIn();
   };
 
   if (!isOpen) return null;
@@ -29,7 +41,7 @@ const LoginModal = ({ isOpen, onClose, onLogin, onSignUp }) => {
           <img src={closeIcon} alt="Close" className="modal__close-icon" />
         </button>
         <form className="modal__form" onSubmit={handleSubmit}>
-          <h2 className="modal__title">Sign in</h2>
+          <h2 className="modal__title">Sign up</h2>
           <label className="modal__label modal__label_type_profile">
             Email
             <input
@@ -40,6 +52,8 @@ const LoginModal = ({ isOpen, onClose, onLogin, onSignUp }) => {
               onChange={(e) => setEmail(e.target.value)}
               onBlur={() => setEmailTouched(true)}
               required
+              autoComplete="email"
+              name="email"
             />
           </label>
           {emailTouched && email && !isValidEmail(email) && (
@@ -54,16 +68,33 @@ const LoginModal = ({ isOpen, onClose, onLogin, onSignUp }) => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              autoComplete="new-password"
+              name="new-password"
+            />
+          </label>
+          <label className="modal__label modal__label_type_profile">
+            Username
+            <input
+              type="text"
+              className="modal__input"
+              placeholder="Enter your username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+              autoComplete="username"
+              name="username"
             />
           </label>
           <button
             className={`modal__submit-button${
-              email && password ? " modal__submit-button--active" : ""
+              username && email && password && isValidEmail(email)
+                ? " modal__submit-button--active"
+                : ""
             }`}
             type="submit"
-            disabled={!(email && password)}
+            disabled={!(username && email && password && isValidEmail(email))}
           >
-            <span className="modal__submit-button-text">Sign in</span>
+            <span className="modal__submit-button-text">Sign up</span>
           </button>
           <div className="modal__secondary-action-row">
             <span className="modal__or-span">or </span>
@@ -72,7 +103,7 @@ const LoginModal = ({ isOpen, onClose, onLogin, onSignUp }) => {
               type="button"
               onClick={handleSecondButtonClick}
             >
-              Sign up
+              Sign in
             </button>
           </div>
         </form>
@@ -81,4 +112,4 @@ const LoginModal = ({ isOpen, onClose, onLogin, onSignUp }) => {
   );
 };
 
-export default LoginModal;
+export default SignUpModal;

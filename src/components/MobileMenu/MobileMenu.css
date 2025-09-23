@@ -1,0 +1,224 @@
+.header:not(.header--dark) .mobile-menu__bar {
+  background: #fff;
+}
+.mobile-menu {
+  position: relative;
+  display: inline-block;
+}
+.mobile-menu__icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+}
+.mobile-menu__bar {
+  width: 16px;
+  height: 2px;
+  background: #333;
+  margin: 4px 0;
+  transition: all 0.3s;
+}
+.mobile-menu__dropdown {
+  position: absolute;
+  top: 48px;
+  right: -16px;
+  background: #1a1b22;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  min-width: 320px;
+  height: 174px;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  padding: 12px 0;
+}
+.mobile-menu__item {
+  background: none;
+  border: none;
+  color: #fff;
+  padding: 22px 24px 0 16px;
+  text-align: left;
+  font-size: 18px;
+  cursor: pointer;
+  width: 100%;
+  display: block;
+  box-sizing: border-box;
+  transition: background 0.2s;
+  text-decoration: none;
+}
+.mobile-menu__item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+.mobile-menu__icon-img {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  vertical-align: middle;
+  filter: invert(1);
+}
+.mobile-menu__user-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+  padding: 22px 30px 0 16px;
+  box-sizing: border-box;
+}
+.mobile-menu__user-row .mobile-menu__item {
+  width: auto;
+  padding: 0;
+}
+.mobile-menu__signout-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.mobile-menu__signout-btn .header__signout-icon {
+  filter: none;
+  transform: translateY(5px);
+  color: #fff;
+}
+.mobile-menu__close-icon-img {
+  width: 28px;
+  height: 28px;
+}
+
+.header:not(.header--dark) .mobile-menu__close-icon-img {
+  filter: brightness(0) invert(1);
+}
+
+@media (max-width: 767px) {
+  .mobile-menu__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2147483646;
+  }
+
+  .mobile-menu__dropdown {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100vw;
+    height: 230px;
+    border-radius: 0;
+    justify-content: flex-start;
+    z-index: 2147483647;
+    padding: 0;
+  }
+
+  .mobile-menu__dropdown-header {
+    padding: 16px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100vw;
+    min-width: 320px;
+    height: 56px;
+    box-sizing: border-box;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .mobile-menu__dropdown-header .header__brand {
+    color: #fff;
+    font-size: 16px;
+    margin-left: 16px;
+    background-color: #1a1b22;
+  }
+
+  .mobile-menu__dropdown-header .modal__close-icon {
+    background: none;
+    border: none;
+    width: 40px;
+    height: 40px;
+    margin-right: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .mobile-menu__dropdown-header .modal__close-icon img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .mobile-menu__signin-btn {
+    width: 288px;
+    height: 56px;
+    border: 1px solid #fff;
+    border-radius: 100px;
+    background: #1a1b22;
+    color: #fff;
+    font-family: var(--font-main);
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 24px;
+    letter-spacing: 0px;
+    text-align: center;
+    cursor: pointer;
+    box-sizing: border-box;
+    margin: 94px 0 24px 16px;
+    display: block;
+    position: relative;
+    pointer-events: auto;
+  }
+
+  .mobile-menu__signin-btn::before {
+    content: "Home";
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    width: 288px;
+    height: 56px;
+    margin-bottom: 22px;
+    color: #fff;
+    font-family: "Roboto", var(--font-main);
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 56px;
+    text-align: left;
+    box-sizing: border-box;
+    padding: 0;
+    /* Make the pseudo-element non-clickable */
+    pointer-events: none;
+  }
+
+  .modal__content {
+    position: fixed !important;
+    top: 56px !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: calc(100% - 56px) !important;
+    border-radius: 16px 16px 0 0 !important;
+    box-shadow: none !important;
+    background-color: #fff !important;
+    padding: 24px 16px !important;
+    box-sizing: border-box !important;
+    overflow-y: auto;
+  }
+
+  .modal__form {
+    width: 100%;
+    min-width: 0;
+
+    .modal__submit-button {
+      width: 100% !important;
+      height: 56px !important;
+    }
+  }
+}

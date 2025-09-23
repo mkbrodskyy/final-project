@@ -1,0 +1,16 @@
+.page {
+  background-color: #f3f3f3;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.page__wrapper {
+  max-width: 1360px;
+  margin: 0 auto;
+}
+
+.page__content {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 20px;
+}

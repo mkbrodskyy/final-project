@@ -1,10 +1,199 @@
-.header {
+.header__signout-icon {
+  color: #fff;
+  fill: #fff;
+  vertical-align: middle;
+}
+.header--dark .header__signout-icon {
+  color: inherit;
+  fill: inherit;
+}
+.header--dark .header__row {
+  border-bottom: 1px solid var(--color-text);
+}
+.header--dark .header__btn-indicator {
+  background: var(--color-text);
+}
+
+.header--dark .header__btn-indicator {
+  width: 178px;
+}
+.header--dark .header__row,
+.header--dark .header__brand,
+.header--dark .header__actions,
+.header--dark .header__btn,
+.header--dark .header__btn-home,
+.header--dark .header__btn-username,
+.header--dark .header__username-text,
+.header--dark .header__signout-wrapper,
+.header--dark .header__signout-icon {
+  color: var(--color-text);
+  border-color: var(--color-text);
+  fill: var(--color-text);
+  background-color: #fff;
+}
+
+.header--dark .header__btn-username {
+  border: 1px solid #1a1b22 !important;
+  color: #1a1b22 !important;
+}
+
+.header__btn-username {
+  font-family: var(--font-main);
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: 0px;
+  text-align: center;
+  vertical-align: middle;
+  color: #fff;
+  background: transparent;
+  border: 1px solid #fff;
+  border-radius: 100px;
+  outline: none;
+  cursor: default;
+  opacity: 1;
+  width: 176px;
+  height: 48px;
   display: flex;
   align-items: center;
-  padding: 32px 0 28px;
-  font-family: "Cabinet Grotesk", Arial, sans-serif;
-  font-weight: 700;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  gap: 16px;
+}
+.header__btn-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  height: 100%;
+}
+
+.header__btn-indicator {
+  width: 68px;
+  height: 3px;
+  background: #fff;
+  opacity: 1;
+  border-radius: 2px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -25px;
+  top: auto;
+  margin: 0;
+}
+
+.header__btn-indicator--saved {
+  width: 114px;
+  background: #fff;
+  left: unset;
+  transform: none;
+  margin-top: 4px;
+}
+
+.header__btn-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  height: 100%;
+}
+
+.header__row {
+  display: flex;
+  align-items: center;
   justify-content: space-between;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  position: relative;
+  padding: 19px 104px 13px;
+}
+
+.header__actions {
+  display: flex;
+  align-items: center;
+  gap: 66px;
+}
+/* Desktop actions wrapper */
+.header__actions-desktop {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+/* Mobile actions wrapper */
+.header__actions-mobile {
+  display: none;
+}
+
+.header__btn {
+  font-family: var(--font-main);
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: 0px;
+  text-align: center;
+  vertical-align: middle;
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  opacity: 1;
+  padding: 0;
+  color: #fff;
+}
+
+.header__btn-signin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 176px;
+  height: 48px;
+  border: 1px solid rgb(255, 255, 255);
+  border-radius: 100px;
+  background: transparent;
+  box-sizing: border-box;
+  color: rgb(255, 255, 255);
+  user-select: text;
+  cursor: default;
+}
+.header__brand {
+  width: 200px;
+  display: flex;
+  align-items: center;
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0px;
+  vertical-align: middle;
+  color: #fff;
+  background: transparent;
+  opacity: 1;
+}
+.header {
+  width: 100%;
+  max-height: 80px;
+  opacity: 1;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  background: transparent;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  box-shadow: 0px -1px 0px 0px #ffffff33 inset;
+  border-radius: 0;
+}
+
+.header-main-wrapper {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .header__container {
@@ -68,4 +257,139 @@
   padding: 0;
   font: inherit;
   cursor: pointer;
+}
+
+.header__user-auth {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 48px;
+}
+
+/* Header background image wrapper */
+.header-bg-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  height: 576px; /* Reserve space for absolutely positioned bg image at desktop */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header-bg-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 576px;
+  background: url("../../assets/header-bg.jpg") center center/cover no-repeat;
+  opacity: 1;
+  z-index: 1;
+}
+
+.header {
+  position: relative;
+  z-index: 2;
+}
+
+.header-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+header.header {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* * {
+  outline: 1px dotted red
+} */
+
+@media (max-width: 767px) {
+  .header__actions-desktop {
+    display: none;
+  }
+  .header__actions-mobile {
+    display: flex;
+    align-items: center;
+  }
+  .header__row {
+    padding: 16px 16px 16px 16px;
+    max-height: 56px;
+  }
+  .header__brand {
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 768px) {
+  .header__row {
+    opacity: 1;
+    max-width: 100vw;
+    padding: 14px 16px 12px;
+    margin: 0px;
+  }
+
+  .header__btn,
+  .header__btn-saved {
+    font-size: 16px;
+  }
+
+  .header__btn-username {
+    min-width: 100px;
+    height: 40px !important;
+    font-size: 16px;
+    padding: 0 10px;
+  }
+  .header__btn-signin {
+    min-width: 100px;
+    height: 40px !important;
+  }
+  .header-bg-wrapper {
+    height: 400px;
+  }
+  .header-bg-image {
+    height: 400px;
+  }
+
+  .header__btn-indicator {
+    bottom: -20px;
+    width: 60px;
+  }
+  .header--dark .header__btn-indicator {
+    width: 160px;
+  }
+}
+
+@media (max-width: 320px) {
+  .header-bg-image {
+    max-width: 320px;
+    max-height: 536px;
+  }
+  .header-bg-wrapper {
+    height: 536px;
+  }
+}
+
+.header__signout-wrapper {
+  background: none;
+  border: none;
+  color: inherit;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.header--dark .header__signout-wrapper,
+.header--dark .header__signout-icon {
+  color: var(--color-text);
+  border: none;
+  fill: var(--color-text);
+  background: none;
 }

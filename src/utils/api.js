@@ -1,3 +1,4 @@
+// MOVE FILE TO: c:\Users\User\Desktop\Final Project\archive\utils\api.js
 import { checkResponse } from "./weatherApi";
 
 const baseUrl =
