@@ -1,7 +1,6 @@
 // Accept savedArticles prop for /saved-news
 import "./Header.css";
 import SavedArticlesHeader from "../SavedArticlesHeader/SavedArticlesHeader";
-import exitIcon from "../../assets/exit.png";
 import { Link } from "react-router-dom";
 import MobileMenu from "../MobileMenu/MobileMenu";
 

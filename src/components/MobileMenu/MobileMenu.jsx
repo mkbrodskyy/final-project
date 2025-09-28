@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./MobileMenu.css";
-import closeIcon from "../../assets/close.png";
+import closeIcon from "../../assets/close.svg";
 import { NavLink } from "react-router-dom";
 
 function MobileMenu({
@@ -32,6 +32,15 @@ function MobileMenu({
     return () => (document.body.style.overflow = "visible");
   }, [open]);
 
+  useEffect(() => {
+    if (!open) return;
+    function handleEsc(e) {
+      if (e.key === "Escape") setOpen(false);
+    }
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, [open]);
+
   return (
     <div className="mobile-menu">
       {isLoginModalOpen ? (
@@ -58,7 +67,10 @@ function MobileMenu({
       ) : null}
       {open && (
         <>
-          <div className="mobile-menu__overlay" />
+          <div
+            className="mobile-menu__overlay"
+            onClick={() => setOpen(false)}
+          />
           <div className="mobile-menu__dropdown">
             <div className="mobile-menu__dropdown-header">
               <span className="header__brand">NewsExplorer</span>

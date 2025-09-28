@@ -221,4 +221,9 @@
       height: 56px !important;
     }
   }
+
+  .mobile-menu__signin,
+  .mobile-menu__signout {
+    cursor: pointer;
+  }
 }

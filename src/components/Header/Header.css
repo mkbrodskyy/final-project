@@ -377,13 +377,16 @@ header.header {
 }
 
 .header__signout-wrapper {
-  background: none;
-  border: none;
-  color: inherit;
-  padding: 0;
-  cursor: pointer;
   display: flex;
   align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
 }
 
 .header--dark .header__signout-wrapper,
@@ -392,4 +395,14 @@ header.header {
   border: none;
   fill: var(--color-text);
   background: none;
+}
+
+.header__btn-signin,
+.header__signout-wrapper {
+  cursor: pointer;
+}
+
+.header__signout-wrapper:focus {
+  outline: 2px solid #2f71e5;
+  outline-offset: 2px;
 }

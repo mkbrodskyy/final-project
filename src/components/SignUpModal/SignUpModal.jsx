@@ -1,8 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../Modal/Modal.css";
-import closeIcon from "../../assets/close.png";
-
-import { useEffect } from "react";
+import closeIcon from "../../assets/close.svg";
 
 const SignUpModal = ({ isOpen, onClose, onSignIn, onSignUpSuccess }) => {
   const [username, setUsername] = useState("");
@@ -18,6 +16,15 @@ const SignUpModal = ({ isOpen, onClose, onSignIn, onSignUpSuccess }) => {
       setEmailTouched(false);
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    function handleEsc(e) {
+      if (e.key === "Escape") onClose();
+    }
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, [isOpen, onClose]);
 
   const isValidEmail = (email) => /^\S+@\S+\.\S+$/.test(email);
 
@@ -35,7 +42,12 @@ const SignUpModal = ({ isOpen, onClose, onSignIn, onSignUpSuccess }) => {
   if (!isOpen) return null;
 
   return (
-    <div className={isOpen ? "modal modal_opened" : "modal"}>
+    <div
+      className={isOpen ? "modal modal_opened" : "modal"}
+      onClick={(e) => {
+        if (e.target.classList.contains("modal")) onClose();
+      }}
+    >
       <div className="modal__content">
         <button className="modal__close" onClick={onClose} aria-label="Close">
           <img src={closeIcon} alt="Close" className="modal__close-icon" />

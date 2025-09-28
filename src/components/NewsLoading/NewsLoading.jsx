@@ -1,5 +1,5 @@
 import React from "react";
-import loadingImg from "../../assets/loading.png";
+import loadingImg from "../../assets/loading.svg";
 import "./NewsLoading.css";
 
 function NewsLoading() {

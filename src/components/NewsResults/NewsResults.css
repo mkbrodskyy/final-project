@@ -107,7 +107,8 @@
   border: none;
 }
 .news-results-list .news-results-list__item {
-  display: block;
+  display: flex;
+  justify-content: center;
   padding: 0;
   margin: 0;
   list-style: none;

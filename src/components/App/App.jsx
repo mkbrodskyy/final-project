@@ -13,7 +13,7 @@ import SuccessModal from "../SuccessModal/SuccessModal";
 import { useState, useEffect } from "react";
 import { fetchNews } from "../../utils/newsApi";
 import NewsCard from "../NewsCard/NewsCard";
-import notFoundImg from "../../assets/not-found.png";
+import notFoundImg from "../../assets/not-found.svg";
 import NewsLoading from "../NewsLoading/NewsLoading";
 
 // Show 3 cards at a time with Show more button

@@ -78,41 +78,43 @@ function NewsCard({ article, isLoggedIn, isSaved, onSaveToggle }) {
           {trashIcon}
         </button>
       ) : (
-        <button
-          className={`news-card__save-btn${
-            isSaved ? " news-card__save-btn--active" : ""
-          }`}
-          type="button"
-          aria-label={
-            isLoggedIn
-              ? isSaved
-                ? "Unsave article"
-                : "Save article"
-              : "Sign in to save articles"
-          }
-          onClick={isLoggedIn ? onSaveToggle : undefined}
-          onMouseEnter={() => !isLoggedIn && setShowTooltip(true)}
-          onMouseLeave={() => setShowTooltip(false)}
-          tabIndex={0}
-        >
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M6 4a2 2 0 0 0-2 2v14l8-5.333L20 20V6a2 2 0 0 0-2-2H6z"
-              fill={isSaved ? "#2F71E5" : "#fff"}
-              stroke={isSaved ? "#2F71E5" : "#B6BCBF"}
-              strokeWidth="2"
-            />
-          </svg>
+        <>
           {!isLoggedIn && showTooltip && (
             <span className="news-card__tooltip">Sign in to save articles</span>
           )}
-        </button>
+          <button
+            className={`news-card__save-btn${
+              isSaved ? " news-card__save-btn--active" : ""
+            }`}
+            type="button"
+            aria-label={
+              isLoggedIn
+                ? isSaved
+                  ? "Unsave article"
+                  : "Save article"
+                : "Sign in to save articles"
+            }
+            onClick={isLoggedIn ? onSaveToggle : undefined}
+            onMouseEnter={() => !isLoggedIn && setShowTooltip(true)}
+            onMouseLeave={() => setShowTooltip(false)}
+            tabIndex={0}
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6 4a2 2 0 0 0-2 2v14l8-5.333L20 20V6a2 2 0 0 0-2-2H6z"
+                fill={isSaved ? "#2F71E5" : "#fff"}
+                stroke={isSaved ? "#2F71E5" : "#B6BCBF"}
+                strokeWidth="2"
+              />
+            </svg>
+          </button>
+        </>
       )}
       <div className="news-card__content">
         <span className="news-card__date">{date}</span>
