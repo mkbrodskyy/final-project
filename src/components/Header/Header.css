@@ -119,7 +119,7 @@
 .header__actions-desktop {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 40px;
 }
 /* Mobile actions wrapper */
 .header__actions-mobile {
@@ -266,13 +266,12 @@
   height: 48px;
 }
 
-/* Header background image wrapper */
 .header-bg-wrapper {
   position: relative;
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  height: 576px; /* Reserve space for absolutely positioned bg image at desktop */
+  height: 576px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -298,16 +297,13 @@
   display: flex;
   justify-content: center;
   width: 100%;
+  margin-bottom: -80px;
 }
 
 header.header {
   margin-left: 0;
   margin-right: 0;
 }
-
-/* * {
-  outline: 1px dotted red
-} */
 
 @media (max-width: 767px) {
   .header__actions-desktop {

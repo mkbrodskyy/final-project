@@ -1,5 +1,3 @@
-// News Explorer SavedNews page placeholder
-import React from "react";
 import NewsCard from "../NewsCard/NewsCard";
 import SavedArticlesHeader from "../SavedArticlesHeader/SavedArticlesHeader";
 import "./SavedNews.css";
@@ -29,13 +27,13 @@ function SavedNews({ savedArticles, isLoggedIn, onSaveToggle }) {
     keywordsDisplay,
   };
   return (
-    <section className="saved-news-section">
+    <main className="saved-news__section">
       <SavedArticlesHeader savedArticlesHeader={savedArticlesHeader} />
       {savedArticles && savedArticles.length > 0 ? (
-        <div className="saved-articles-news-list-wrapper">
-          <ul className="news-results-list">
+        <div className="saved-articles__news-list-wrapper">
+          <ul className="news-results__list">
             {savedArticles.map((article, i) => (
-              <li key={article.url || i} className="news-results-list__item">
+              <li key={article.url || i} className="news-results__item">
                 <NewsCard
                   article={article}
                   isLoggedIn={isLoggedIn}
@@ -47,11 +45,11 @@ function SavedNews({ savedArticles, isLoggedIn, onSaveToggle }) {
           </ul>
         </div>
       ) : (
-        <p className="saved-articles-empty">
+        <p className="saved-articles__empty">
           Your saved articles will appear here.
         </p>
       )}
-    </section>
+    </main>
   );
 }
 

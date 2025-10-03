@@ -1,8 +1,7 @@
 import Header from "../Header/Header";
-import "./App.css";
 import "../Page/Page.css";
 import "../NewsResults/NewsResults.css";
-import Main from "../Main/Main";
+import "../Main/Main.css";
 import SavedNews from "../SavedNews/SavedNews";
 import { Routes, Route, useLocation } from "react-router-dom";
 import SearchForm from "../SearchForm/SearchForm";
@@ -24,9 +23,9 @@ function NewsResults({ articles, isLoggedIn, savedArticles, onSaveToggle }) {
   const showMoreNeeded = visibleCount < articles.length;
   return (
     <>
-      <ul className="news-results-list">
+      <ul className="news-results__list">
         {visibleArticles.map((article, i) => (
-          <li key={article.url || i} className="news-results-list__item">
+          <li key={article.url || i} className="news-results__item">
             <NewsCard
               article={article}
               isLoggedIn={isLoggedIn}
@@ -213,120 +212,115 @@ function App() {
   }
   return (
     <div className="page">
-      {location.pathname === "/" ? (
-        <div className="header-bg-wrapper">
-          <div className="header-bg-image"></div>
-          <div className="header-wrapper">
-            <Header
-              isLoggedIn={isLoggedIn}
-              username={username}
-              onSignIn={handleOpenLoginModal}
-              onSignOut={() => {
-                setIsLoggedIn(false);
-                setUsername("");
-                // localStorage update handled by useEffect
-              }}
-              isLoginModalOpen={isLoginModalOpen}
-              onCloseLoginModal={handleCloseLoginModal}
-            />
-          </div>
-          <h1 className="main-title">What's going on in the world?</h1>
-          <p className="main-subtext">
-            Find the latest news on any topic and save them in your personal
-            account.
-          </p>
-          <SearchForm onSearch={handleSearch} error={searchError} />
-        </div>
-      ) : (
-        <div className="header-wrapper">
-          <Header
-            isLoggedIn={isLoggedIn}
-            username={username}
-            onSignIn={handleOpenLoginModal}
-            onSignOut={() => {
-              setIsLoggedIn(false);
-              setUsername("");
-              // localStorage update handled by useEffect
-            }}
-            isLoginModalOpen={isLoginModalOpen}
-            onCloseLoginModal={handleCloseLoginModal}
-            savedArticlesHeader={
-              location.pathname === "/saved-news"
-                ? {
-                    username,
-                    count: savedCount,
-                    keywordsDisplay: savedKeywordsDisplay,
-                  }
-                : null
-            }
-          />
-        </div>
-      )}
-
-      {/* News results block - only on home page, and only after a search */}
-      {location.pathname === "/" &&
-        (isLoading ||
-          articles.length > 0 ||
-          (searchError && searchError !== "Please enter a keyword")) && (
-          <div className="news-results-block">
-            {/* Show heading only when there are articles and not loading or error */}
-            {!isLoading && !searchError && articles.length > 0 && (
-              <h2 className="news-results-heading">Search results</h2>
-            )}
-            {isLoading && <NewsLoading />}
-            {!isLoading && !searchError && articles.length > 0 && (
-              <NewsResults
-                articles={articles}
-                isLoggedIn={isLoggedIn}
-                savedArticles={savedArticles}
-                onSaveToggle={handleToggleSaveArticle}
-              />
-            )}
-            {!isLoading &&
-              searchError &&
-              searchError !== "Please enter a keyword" &&
-              (searchError === "Nothing Found" ? (
-                <div className="news-results-error-wrapper">
-                  <img
-                    src={notFoundImg}
-                    alt="Not found"
-                    className="news-results-error__img"
-                  />
-                  <div className="news-results-error">
-                    <div>Nothing found</div>
-                    <div className="news-results-error__subtext">
-                      Sorry, but nothing matched <br />
-                      your search terms.
+      {/* Header always visible, but content varies by route */}
+      <div className="header-wrapper">
+        <Header
+          isLoggedIn={isLoggedIn}
+          username={username}
+          onSignIn={handleOpenLoginModal}
+          onSignOut={() => {
+            setIsLoggedIn(false);
+            setUsername("");
+          }}
+          isLoginModalOpen={isLoginModalOpen}
+          onCloseLoginModal={handleCloseLoginModal}
+          savedArticlesHeader={
+            location.pathname === "/saved-news"
+              ? {
+                  username,
+                  count: savedCount,
+                  keywordsDisplay: savedKeywordsDisplay,
+                }
+              : null
+          }
+        />
+      </div>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <main>
+              <section className="main-hero-section">
+                <div className="header-bg-wrapper">
+                  <div className="header-bg-image"></div>
+                  <h1 className="main-title">
+                    What&apos;s going on in the world?
+                  </h1>
+                  <p className="main-subtext">
+                    Find the latest news on any topic and save them in your
+                    personal account.
+                  </p>
+                  <SearchForm onSearch={handleSearch} error={searchError} />
+                </div>
+              </section>
+              {/* News results block - only after a search */}
+              {(isLoading ||
+                articles.length > 0 ||
+                (searchError && searchError !== "Please enter a keyword")) && (
+                <section className="main-results-section">
+                  <div className="news-results-block">
+                    {/* Show heading only when there are articles and not loading or error */}
+                    {!isLoading && !searchError && articles.length > 0 && (
+                      <h2 className="news-results__heading">Search results</h2>
+                    )}
+                    {isLoading && <NewsLoading />}
+                    {!isLoading && !searchError && articles.length > 0 && (
+                      <NewsResults
+                        articles={articles}
+                        isLoggedIn={isLoggedIn}
+                        savedArticles={savedArticles}
+                        onSaveToggle={handleToggleSaveArticle}
+                      />
+                    )}
+                    {!isLoading &&
+                      searchError &&
+                      searchError !== "Please enter a keyword" &&
+                      (searchError === "Nothing Found" ? (
+                        <div className="news-results-error-wrapper">
+                          <img
+                            src={notFoundImg}
+                            alt="Not found"
+                            className="news-results-error__img"
+                          />
+                          <div className="news-results-error">
+                            <div className="news-results-error__title">
+                              Nothing found
+                            </div>
+                            <div className="news-results__error-subtitle">
+                              Sorry, but nothing matched <br />
+                              your search terms.
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="news-results-error">{searchError}</div>
+                      ))}
+                  </div>
+                </section>
+              )}
+              {/* About section */}
+              <section className="main-about-section">
+                <div className="main-body-visuals-wrapper">
+                  <div className="main-body-visuals">
+                    <div className="main-solid-circle"></div>
+                    <div className="main-about-text">
+                      <h2 className="main-about-title">About the author</h2>
+                      <p className="main-about-desc">
+                        Mykhaylo Brodskyy is a software engineering student at
+                        TripleTen. This project, built with React, JavaScript,
+                        and CSS, showcases his ability to work with third-party
+                        APIs and manage application state. Mykhaylo is
+                        passionate about creating intuitive, responsive user
+                        experiences and is eager to apply his skills to new
+                        challenges.
+                      </p>
                     </div>
                   </div>
                 </div>
-              ) : (
-                <div className="news-results-error">{searchError}</div>
-              ))}
-          </div>
-        )}
-      {/* Only show main-body-visuals on the home page */}
-      {location.pathname === "/" && (
-        <div className="main-body-visuals-wrapper">
-          <div className="main-body-visuals">
-            <div className="main-solid-circle"></div>
-            <div className="main-about-text">
-              <h2 className="main-about-title">About the author</h2>
-              <p className="main-about-desc">
-                This block describes the project author. Here you should
-                indicate your name, what you do, and which development
-                technologies you know.
-              </p>
-              <p className="main-about-desc">
-                You can also talk about your experience with TripleTen, what you
-                learned there, and how you can help potential customers.
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
-      <Routes>
-        <Route path="/" element={<Main />} />
+              </section>
+            </main>
+          }
+        />
         <Route
           path="/saved-news"
           element={
@@ -355,8 +349,6 @@ function App() {
         onClose={() => setIsSuccessModalOpen(false)}
         onSignIn={handleSignInFromSuccess}
       />
-      {/* this is the modal overlay, which should be rendered UNDER the modal content and visually be like a 50% transparent background under the modal */}
-      {/* <Overlay /> */}
       <div className="footer-wrapper">
         <Footer />
       </div>

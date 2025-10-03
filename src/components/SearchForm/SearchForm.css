@@ -1,7 +1,5 @@
-/* Input styles for 'Enter topic' */
 .search-form__input {
   flex: 1;
-  /* height: 100%; removed to allow media query to control height */
   border: none;
   outline: none;
   font-family: var(--font-main);

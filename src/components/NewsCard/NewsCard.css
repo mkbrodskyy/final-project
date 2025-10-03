@@ -1,13 +1,10 @@
-/* Restore hover state for like/save button */
 .news-card__save-btn:hover svg path {
   stroke: #1a1b22;
 }
-/* Trash icon hover effect for delete button */
 .news-card__delete-btn:hover .news-card__trash-icon path,
 .news-card__delete-btn:hover .news-card__trash-icon rect {
   stroke: #1a1b22;
 }
-/* Delete button for Saved articles page */
 .news-card__delete-btn {
   width: 40px;
   height: 40px;
@@ -25,7 +22,6 @@
   cursor: pointer;
   z-index: 2;
 }
-/* Keyword tag for NewsCard */
 .news-card__keyword-tag {
   text-transform: capitalize;
   position: absolute;
@@ -56,7 +52,6 @@
 .news-card__save-btn--active .news-card__trash-icon {
   color: var(--color-muted);
 }
-/* Trash icon color for Saved articles page */
 .news-card__trash-icon {
   color: var(--color-muted);
   transition: color 0.2s;
@@ -64,18 +59,14 @@
 .news-card__save-btn:hover .news-card__trash-icon {
   color: var(--color-text);
 }
-/* Trash icon hover effect for Saved articles page */
 .news-card__save-btn:hover img[src$="trash.svg"] {
   filter: invert(10%) sepia(8%) saturate(2000%) hue-rotate(180deg)
     brightness(90%) contrast(100%);
 }
-/* Save button icon hover and active states */
-/* Only apply color transitions to trash icon, not all save icons */
 .news-card__trash-icon path,
 .news-card__trash-icon rect {
   transition: stroke 0.2s;
 }
-/* Save button styles */
 .news-card__save-btn {
   width: 40px;
   height: 40px;
@@ -198,7 +189,6 @@ img.news-card__image {
   color: var(--color-muted);
   opacity: 1;
 }
-/* Tooltip for save button (styled like keyword tag) */
 .news-card__tooltip {
   position: absolute;
   top: 24px;

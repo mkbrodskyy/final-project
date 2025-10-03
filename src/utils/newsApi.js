@@ -1,5 +1,3 @@
-// src/utils/newsApi.js
-
 const newsApiBaseUrl =
   import.meta.env.MODE === "production"
     ? "https://nomoreparties.co/news/v2/everything"

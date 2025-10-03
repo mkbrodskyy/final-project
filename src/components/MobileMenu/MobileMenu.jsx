@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./MobileMenu.css";
 import closeIcon from "../../assets/close.svg";
 import { NavLink } from "react-router-dom";

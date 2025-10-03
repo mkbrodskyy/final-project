@@ -1,7 +1,5 @@
-// News Explorer NewsCard component
 import React from "react";
 import "./NewsCard.css";
-// Use inline SVG for trash icon with currentColor
 
 function NewsCard({ article, isLoggedIn, isSaved, onSaveToggle }) {
   const { urlToImage, title, description, publishedAt, source, url } = article;

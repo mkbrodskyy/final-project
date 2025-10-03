@@ -1,4 +1,3 @@
-import React from "react";
 import loadingImg from "../../assets/loading.svg";
 import "./NewsLoading.css";
 
