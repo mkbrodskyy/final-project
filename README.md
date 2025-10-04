@@ -1,5 +1,9 @@
 # News Explorer
 
+## Live Demo
+
+[View the deployed app here](https://mykhaylobrodskyy.github.io/final-project-news-explorer)
+
 ## Project Planning (Trello Board)
 
 [View the Trello board for this project](https://trello.com/invite/b/68b7c1883d18aee5e9719264/ATTI32ad6f5bfa53b98fd95bfd4513eec0daC8265751/final-project-news-explorer)
