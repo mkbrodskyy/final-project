@@ -2,7 +2,7 @@
 
 ## Live Demo
 
-[View the deployed app here](https://mykhaylobrodskyy.github.io/final-project-news-explorer)
+[View the deployed app here](https://mkbrodskyy.github.io/final-project/)
 
 ## Project Planning (Trello Board)
 
